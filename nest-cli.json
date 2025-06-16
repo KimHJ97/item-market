@@ -1,0 +1,29 @@
+{
+  "collection": "@nestjs/schematics",
+  "sourceRoot": "apps",
+  "monorepo": true,
+  "projects": {
+    "api-server": {
+      "type": "application",
+      "root": "apps/api-server",
+      "sourceRoot": "apps/api-server/src",
+      "entryFile": "main"
+    },
+    "admin-server": {
+      "type": "application",
+      "root": "apps/admin-server",
+      "sourceRoot": "apps/admin-server/src",
+      "entryFile": "main"
+    },
+    "domain-item": {
+      "type": "library",
+      "root": "libs/domain",
+      "sourceRoot": "libs/domain/src"
+    },
+    "infrastructure": {
+      "type": "library",
+      "root": "libs/infrastructure",
+      "sourceRoot": "libs/infrastructure/src"
+    }
+  }
+}

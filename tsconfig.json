@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "ES2023",
+    "declaration": true,
+    "removeComments": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "sourceMap": true,
+    "outDir": "./dist",
+    "rootDir": "./",                          // ✅ 반드시 추가
+    "baseUrl": ".",
+    "paths": {
+      "@domain/*": ["libs/domain/src/*"],
+      "@persistence/*": ["libs/infrastructure/src/persistence/*"],
+      "@config/*": ["config/*"]
+    },
+    "incremental": true,
+    "skipLibCheck": true,
+    "strictNullChecks": true,
+    "forceConsistentCasingInFileNames": true,
+    "noImplicitAny": false,
+    "strictBindCallApply": false,
+    "noFallthroughCasesInSwitch": false
+  }
+}
