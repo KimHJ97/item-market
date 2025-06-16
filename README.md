@@ -1,98 +1,36 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# Item 프로젝트
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+## 프로젝트 구조
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
-
-## Description
-
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
-
-## Project setup
-
-```bash
-$ npm install
+ - `상황`
+   - 클라이언트 웹 사이트와 관리자 웹 사이트 구현이 필요한 상황
+   - 클라이언트는 클라이언트 사이드 렌더링 방식으로 Next.js를 이용하여 구현하고, 클라이언트용 API 서버가 필요한 상황
+   - 관리자는 서버 사이드 렌더링 방식으로 API 서버에서 뷰 엔진을 이용
+   - 클라이언트 API와 관리자 API가 분리가 되어야 한다.
+     - 서로 API 규격, 인증 방식, 필요한 API가 다르다.
+     - 엔드포인트를 분리하여 폴더로 분기처리를 통해 코드상 분기 코드가 들어가진 않아도 되지만, 중복 코드가 많이 발생할 수 있다.
+ - `구조 잡기`
+   - domain과 persistence는 대부분 여러 애플리케이션에서 공통으로 이용될 수 있다. 때문에, 재사용 가능하도록 libs에 위치시킨다.
+   - DB, AWS, FCM(푸시 메시지) 등 설정도 여러 곳에서 설정만 추가하여 사용하고 싶다.
+   - 특정 애플리케이션에 엔드포인트(cotnroller)와 비즈니스 로직(service)은 상이할 수 있다.
+     - 요청 DTO, 응답 DTO도 각 애플리케이션마다 만든다.
+     - Persistence 계층은 libs에서 공통으로 사용한다.
+   - __MSA를 이용할 만큼 크지 않으며, MSA를 해본 적이 없다. 때문에, 단방향 의존 구조와 재사용 가능한 구조만 갖추었다.__ 
+ - `폴더 구조 참고`
+   - 모노레포(package.json): https://github.com/mikemajesty/nestjs-monorepo
+   - 모노레포(루트 package.json): https://github.com/moeedhy/microservices-nestjs-monorepo-boilerplate
+   - 단일 모듈 프로젝트: https://github.com/brocoders/nestjs-boilerplate
 ```
-
-## Compile and run the project
-
-```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+.
+├── apps
+│   ├── admin-server: 어드민 서버
+│   └── api-server: 클라이언트 API 서버
+├── config
+│   └── database: RDBMS 설정
+├── libs
+│   ├── domain: 순수 TypeScript 도메인 객체
+│   └── infrastructure: persistence 등 기타 구현체
+├── nest-cli.json: 멀티 모듈 구조 설정
+├── package.json
+└── tsconfig.json: TypeScript 파일 경로 설정
 ```
-
-## Run tests
-
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
-```
-
-## Deployment
-
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
-
-```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
-```
-
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
-
-## Resources
-
-Check out a few resources that may come in handy when working with NestJS:
-
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
