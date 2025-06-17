@@ -5,14 +5,14 @@ import {
   Body,
   Param,
   Delete,
-  Put,
+  Put, Render,
 } from '@nestjs/common';
 import { ItemService } from './item.service';
 import { Item } from '@domain/item/item';
 import { CreateItemDto } from './dto/create-item.dto';
 import { UpdateItemDto } from './dto/update-item.dto';
 
-@Controller('items')
+@Controller('api/items')
 export class ItemController {
   constructor(private readonly itemService: ItemService) {}
 

@@ -13,7 +13,15 @@
       "type": "application",
       "root": "apps/admin-server",
       "sourceRoot": "apps/admin-server/src",
-      "entryFile": "main"
+      "entryFile": "main",
+      "compilerOptions": {
+        "assets": [
+          {
+            "include": "../views/**/*",
+            "outDir": "dist/apps/admin-server/views"
+          }
+        ]
+      }
     },
     "domain-item": {
       "type": "library",
