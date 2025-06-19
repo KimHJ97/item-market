@@ -19,8 +19,13 @@
           {
             "include": "../views/**/*",
             "outDir": "dist/apps/admin-server/views"
+          },
+          {
+            "include": "../public/**/*",
+            "outDir": "dist/apps/admin-server/public"
           }
-        ]
+        ],
+        "watchAssets": true
       }
     },
     "domain-item": {

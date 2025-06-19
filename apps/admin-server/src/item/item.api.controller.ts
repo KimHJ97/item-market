@@ -1,43 +1,54 @@
 import {
-  Controller,
-  Get,
-  Post,
   Body,
-  Param,
+  Controller,
   Delete,
-  Put, Render,
+  Get,
+  Param,
+  Post,
+  Put,
 } from '@nestjs/common';
 import { ItemService } from './item.service';
 import { Item } from '@domain/item/item';
-import { CreateItemDto } from './dto/create-item.dto';
-import { UpdateItemDto } from './dto/update-item.dto';
+import { ItemCreateRequest } from './dto/item-create.request';
+import { ItemUpdateRequest } from './dto/item-update.request';
+import { CommonResponse } from '../common/common.response';
 
-@Controller('api/items')
+@Controller('/api/items')
 export class ItemController {
   constructor(private readonly itemService: ItemService) {}
 
   @Post()
-  async create(@Body() dto: CreateItemDto): Promise<Item> {
-    return this.itemService.create(dto);
+  async createItem(
+    @Body() dto: ItemCreateRequest,
+  ): Promise<CommonResponse<Item>> {
+    const item = await this.itemService.createItem(dto);
+    return CommonResponse.success(item);
   }
 
   @Get()
-  findAll(): Promise<Item[]> {
-    return this.itemService.findAll();
+  async findItemAll(): Promise<CommonResponse<Item[]>> {
+    const items = await this.itemService.findItemAll();
+    return CommonResponse.success(items);
   }
 
   @Get(':id')
-  findOne(@Param('id') id: number): Promise<Item> {
-    return this.itemService.findOne(id);
+  async findItemById(@Param('id') id: number): Promise<CommonResponse<Item>> {
+    const item = await this.itemService.findItemById(id);
+    return CommonResponse.success(item);
   }
 
   @Put(':id')
-  update(@Param('id') id: number, @Body() dto: UpdateItemDto): Promise<Item> {
-    return this.itemService.update(id, dto);
+  async updateItem(
+    @Param('id') id: number,
+    @Body() dto: ItemUpdateRequest,
+  ): Promise<CommonResponse<Item>> {
+    const item = await this.itemService.updateItem(id, dto);
+    return CommonResponse.success(item);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: number): Promise<void> {
-    return this.itemService.remove(id);
+  async removeItem(@Param('id') id: number): Promise<CommonResponse<void>> {
+    await this.itemService.removeItem(id);
+    return CommonResponse.success(undefined as void);
   }
 }

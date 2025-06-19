@@ -1,6 +1,6 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
-import { CreateItemDto } from './dto/create-item.dto';
-import { UpdateItemDto } from './dto/update-item.dto';
+import { ItemCreateRequest } from './dto/item-create.request';
+import { ItemUpdateRequest } from './dto/item-update.request';
 import { Item } from '@domain/item/item';
 import { ItemRepository } from '@persistence/item/item.repository';
 
@@ -11,7 +11,7 @@ export class ItemService {
     private readonly itemRepository: ItemRepository,
   ) {}
 
-  create(createItemDto: CreateItemDto): Promise<Item> {
+  createItem(createItemDto: ItemCreateRequest): Promise<Item> {
     const item = {
       ...createItemDto,
       createDateTime: new Date(),
@@ -21,18 +21,21 @@ export class ItemService {
     return this.itemRepository.save(item);
   }
 
-  findAll(): Promise<Item[]> {
+  findItemAll(): Promise<Item[]> {
     return this.itemRepository.findAll();
   }
 
-  async findOne(id: number): Promise<Item> {
+  async findItemById(id: number): Promise<Item> {
     const item = await this.itemRepository.findById(id);
     if (!item) throw new NotFoundException(`Item #${id} not found`);
     return item;
   }
 
-  async update(id: number, updateItemDto: UpdateItemDto): Promise<Item> {
-    const findItem = await this.findOne(id);
+  async updateItem(
+    id: number,
+    updateItemDto: ItemUpdateRequest,
+  ): Promise<Item> {
+    const findItem = await this.findItemById(id);
     return this.itemRepository.save({
       ...findItem,
       ...updateItemDto,
@@ -40,8 +43,8 @@ export class ItemService {
     });
   }
 
-  async remove(id: number) {
-    await this.findOne(id);
+  async removeItem(id: number) {
+    await this.findItemById(id);
     return this.itemRepository.delete(id);
   }
 }

@@ -9,7 +9,7 @@
     "allowSyntheticDefaultImports": true,
     "sourceMap": true,
     "outDir": "./dist",
-    "rootDir": "./",                          // ✅ 반드시 추가
+    "rootDir": "./",
     "baseUrl": ".",
     "paths": {
       "@domain/*": ["libs/domain/src/*"],

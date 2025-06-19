@@ -1,6 +1,6 @@
 import { Controller, Get, Render } from '@nestjs/common';
 
-@Controller('/items')
+@Controller('/')
 export class ItemViewController {
   @Get()
   @Render('home')
